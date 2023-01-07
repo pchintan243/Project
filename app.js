@@ -16,18 +16,18 @@ async function main() {
 
 // Define mongoose schema
 const helloSchema = new mongoose.Schema({
-    firstname : String,
-    lastname : String,
-    email : String,
-    password : String,
-    gender : String,
-    branch : String,
-    query : String,
-    other : String,
-    computer : String,
-    phone : Number,
-    age : Number,
-    note : String
+    Firstname: String,
+    Lastname: String,
+    Email: String,
+    Password: String,
+    Gender: String,
+    Branch: String,
+    Query: String,
+    OtherQuery: String,
+    Computer: String,
+    Phone: Number,
+    Age: Number,
+    Note: String
 });
 
 const Hello = new mongoose.model('Hello', helloSchema);
