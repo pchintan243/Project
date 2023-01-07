@@ -18,37 +18,27 @@
     </nav>
     <div class="container mt-5">
         <form class="row g-3 needs-validation" action="/QueryForm.html" method="post">
+
+            <!-- First Name Section -->
             <div class="col-md">
                 <label for="firstname" class="form-label">First name</label>
                 <input type="text" class="form-control" id="validationCustom01" name="Firstname" required>
             </div>
+
+            <!-- last Name Section -->
             <div class="col-md">
                 <label for="lastname" class="form-label">Last name</label>
                 <input type="text" class="form-control" id="validationCustom02" name="Lastname" required>
             </div>
+
+            <!-- Email Section -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                     name="Email" required>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="Password" autocomplete="on"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="gender" class="form-label">Gender: </label>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender" id="inlineRadio1" value="Male" required>
-                    <label class="form-check-label" for="inlineRadio1">Male</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender" id="inlineRadio2" value="Female"
-                        required>
-                    <label class="form-check-label" for="inlineRadio2">Female</label>
-                </div>
-            </div>
 
+            <!-- Branch Section -->
             <select class="form-select" aria-label="Default select example" name="Branch" required>
                 <option value="" selected>Select Branch</option>
                 <option value="Information Technology">Information Technology</option>
@@ -62,6 +52,7 @@
                 <option value="Automobile Engineering">Automobile Engineering</option>
             </select>
 
+            <!-- Query Section -->
             <select class="form-select" aria-label="Default select example" name="Query" onchange="yesnoCheck(this);"
                 required>
                 <option value="" selected>Select Query</option>
@@ -74,32 +65,27 @@
             </select>
             <div id="ifYes" style="display: none;">
                 <label for="other">Enter Other Query</label>
-                <input type="text" name="OtherQuery" /><br / required>
+                <input type="text" name="OtherQuery" required /><br />
             </div>
             <div id="ifY" style="display: none;">
                 <label for="computer">Computer IP</label>
-                <input type="text" name="Computer" /><br / required>
+                <input type="text" name="Computer" required /><br />
             </div>
 
-
+            <!-- Phone Section -->
             <div class="col-md-4">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="tel" class="form-control" id="validationCustom03" name="Phone" pattern="[0-9]{10}"
-                    required>
-            </div>
-
-            <div class="col-md-3">
-                <label for="age" class="form-label">Age</label>
-                <input type="number" class="form-control" id="validationCustom05" name="Age" min="18" max="120"
-                    required>
+                <input type="tel" class="form-control" id="validationCustom03" name="Phone"
+                    placeholder="eg:- 1234567890" pattern="[0-9]{10}" required>
             </div>
 
             <!-- Note section -->
             <label for="floatingTextarea2">Note</label>
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="Note"
-                    style="height: 100px"></textarea>
+                <textarea class="form-control" id="floatingTextarea2" name="Note" style="height: 100px"></textarea>
             </div>
+
+            <!-- Button -->
             <div class="col-12">
                 <button class="btn btn-primary m-1" type="submit" name="button">Submit</button>
                 <button class="btn btn-danger m-1" type="rest" name="button">Reset</button>
@@ -112,13 +98,16 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+
         function yesnoCheck(that) {
+            // Function for selecting Computer related query
             if (that.value == "Computer") {
                 document.getElementById("ifY").style.display = "block";
             } else {
                 document.getElementById("ifY").style.display = "none";
             }
 
+            // Function for selecting other query
             if (that.value == "OtherQuery") {
                 document.getElementById("ifYes").style.display = "block";
             } else {

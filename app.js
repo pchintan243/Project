@@ -19,14 +19,11 @@ const helloSchema = new mongoose.Schema({
     Firstname: String,
     Lastname: String,
     Email: String,
-    Password: String,
-    Gender: String,
     Branch: String,
     Query: String,
     OtherQuery: String,
     Computer: String,
     Phone: Number,
-    Age: Number,
     Note: String
 });
 
