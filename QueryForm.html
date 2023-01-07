@@ -33,22 +33,23 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+                    autocomplete="on">
             </div>
             <div class="form-group">
                 <label for="gender" class="form-label">Gender: </label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                    <input class="form-check-input" type="radio" name="gender" id="inlineRadio1"
                         value="option1">
                     <label class="form-check-label" for="inlineRadio1">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                    <input class="form-check-input" type="radio" name="gender" id="inlineRadio2"
                         value="option2">
                     <label class="form-check-label" for="inlineRadio2">Female</label>
                 </div>
             </div>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select" aria-label="Default select example" name="branch">
                 <option selected>Select Branch</option>
                 <option value="1">Information Technology</option>
                 <option value="2">Computer Engineering</option>
@@ -71,10 +72,12 @@
                 <option value="6">Other</option>
             </select>
             <div id="ifYes" style="display: none;">
-                <label for="other">Enter Other Query</label> <input type="text" id="car" name="other" /><br />
+                <label for="other">Enter Other Query</label>
+                <input type="text" name="other" /><br />
             </div>
             <div id="ifY" style="display: none;">
-                <label for="computer">Computer IP</label> <input type="text" id="car" name="computer" /><br />
+                <label for="computer">Computer IP</label>
+                <input type="text" name="computer" /><br />
             </div>
 
 
@@ -91,7 +94,7 @@
             <!-- Note section -->
             <label for="floatingTextarea2">Note</label>
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="note"
                     style="height: 100px"></textarea>
             </div>
             <div class="col-12">

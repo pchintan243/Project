@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const app = express();
 const mongoose = require('mongoose');
+const bodyparser = require('body-parser');
 mongoose.set('strictQuery', true);
 const port = 6200;
 
@@ -15,16 +16,27 @@ async function main() {
 
 // Define mongoose schema
 const helloSchema = new mongoose.Schema({
-    "firstname": String,
-    "lastname": String
+    firstname : String,
+    lastname : String,
+    email : String,
+    password : String,
+    gender : String,
+    branch : String,
+    query : String,
+    other : String,
+    computer : String,
+    phone : Number,
+    age : Number,
+    note : String
 });
 
-const Hello = mongoose.model('Hello', helloSchema);
+const Hello = new mongoose.model('Hello', helloSchema);
 
 
 // Express specific stuff
 const staticPath = path.join(__dirname)
 app.use(express.static(staticPath));
+app.use(express.urlencoded());
 
 // const templatePath = path.join(__dirname);
 // app.use(express.staticPath(templatePath));
