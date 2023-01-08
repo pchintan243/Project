@@ -23,44 +23,50 @@ const helloSchema = new mongoose.Schema({
     Query: String,
     OtherQuery: String,
     Computer: String,
-    Phone: Number,
+    Phone: String,
     Note: String
 });
 
-const Hello = new mongoose.model('Hello', helloSchema);
+const Hello = mongoose.model('Hello', helloSchema);
 
+const mainSchema = new mongoose.Schema({
+    Email: String,
+    Password: String
+});
+
+const Main = mongoose.model('Main', mainSchema);
 
 // Express specific stuff
 const staticPath = path.join(__dirname)
 app.use(express.static(staticPath));
 app.use(express.urlencoded());
 
-// const templatePath = path.join(__dirname);
-// app.use(express.staticPath(templatePath));
+
 //Endpoints
 app.get('/', (req, res) => {
-
+    // res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/QueryForm', (req, res) => {
-    res.sendFile(path.join(__dirname + '/QueryForm.html'));
-});
-
-// app.get('/contact', (req, res) => {
-//     const con = "This is the best content on the internet";
-//     const params = { 'title': 'pubg is the best game', "content": con };
-//     res.status(200).render('contact.pug', params);
+// app.get('/QueryForm', (req, res) => {
+//     res.sendFile(path.join(__dirname + '/QueryForm.html'));
 // });
 
+app.post('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname + '/QueryForm.html')); 
+    var myData = new Main(req.body);
+    myData.save();
+});
+
+
+
 app.post('/QueryForm.html', (req, res) => {
-    // res.sendFile(path.join(__dirname + '/QueryForm.html'));
+    res.sendFile(path.join(__dirname + '/QueryForm.html'));
     var myData = new Hello(req.body);
     myData.save().then(() => {
         res.send("This item has been saved in the database")
     }).catch(() => {
         res.status(400).send("Item was not saved to the database")
     });
-    // res.status(200).render('index');
 });
 
 // Start the server
