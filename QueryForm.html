@@ -20,22 +20,35 @@
         <form class="row g-3 needs-validation" action="/QueryForm.html" method="post">
 
             <!-- First Name Section -->
-            <div class="col-md">
+            <div class="col-md-6">
                 <label for="firstname" class="form-label">First name</label>
                 <input type="text" class="form-control" id="validationCustom01" name="Firstname" required>
             </div>
 
             <!-- last Name Section -->
-            <div class="col-md">
+            <div class="col-md-6">
                 <label for="lastname" class="form-label">Last name</label>
                 <input type="text" class="form-control" id="validationCustom02" name="Lastname" required>
             </div>
 
             <!-- Email Section -->
-            <div class="mb-3">
+            <div class="col-md-12">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                     name="Email" required>
+            </div>
+
+            <!-- Phone Section -->
+            <div class="col-md-12">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="validationCustom03" name="Phone"
+                    placeholder="eg:- 1234567890" pattern="[0-9]{10}" required>
+            </div>
+
+            <!-- Complaint date section -->
+            <div class="col-md-12">
+                <label for="querydate" class="form-label">Query Date: </label>
+                <input type="date" name="QueryDate" id="theDate">
             </div>
 
             <!-- Branch Section -->
@@ -60,7 +73,7 @@
                 <option value="Plumbing">Plumbing</option>
                 <option value="Carpentering">Carpentering</option>
                 <option value="Electrical">Electrical</option>
-                <option value="Civil">Civil Work</option>
+                <option value="Civil Work">Civil Work</option>
                 <option value="OtherQuery">Other</option>
             </select>
             <div id="ifYes" style="display: none;">
@@ -70,13 +83,6 @@
             <div id="ifY" style="display: none;">
                 <label for="computer">Computer IP</label>
                 <input type="text" name="Computer">
-            </div>
-
-            <!-- Phone Section -->
-            <div class="col-md-4">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="tel" class="form-control" id="validationCustom03" name="Phone"
-                    placeholder="eg:- 1234567890" pattern="[0-9]{10}" required>
             </div>
 
             <!-- Note section -->
@@ -114,6 +120,19 @@
                 document.getElementById("ifYes").style.display = "none";
             }
         }
+
+        // For set as a today's date default
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("theDate").value = today;
     </script>
 </body>
 
