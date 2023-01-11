@@ -4,6 +4,7 @@ const fs = require("fs");
 const app = express();
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
+const { timeStamp } = require("console");
 mongoose.set('strictQuery', true);
 const port = 6200;
 
@@ -33,8 +34,14 @@ const Hello = mongoose.model('Hello', helloSchema);
 
 // Define schema for main file --> index.html
 const mainSchema = new mongoose.Schema({
-    Email: String,
-    Password: String
+    Email: {
+        type: String,
+        enum:["chintan@gmail.com", "patelchintan@gmail.com"]
+    },
+    Password: {
+        type: String,
+        enum:["123"]
+    }
 });
 
 const Main = mongoose.model('Main', mainSchema);
