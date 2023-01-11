@@ -6,17 +6,17 @@ const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const { timeStamp } = require("console");
 mongoose.set('strictQuery', true);
-const port = 6200;
+const port = 8000;
 
 main().catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/hello');
+    await mongoose.connect('mongodb://127.0.0.1:27017/ComplaintDB');
     console.log("We are connecting bro..");
 }
 
 // Define schema for QueryFrom file --> QueryFrom.html
-const helloSchema = new mongoose.Schema({
+const complaintSchema = new mongoose.Schema({
     Firstname: String,
     Lastname: String,
     Email: String,
@@ -29,22 +29,22 @@ const helloSchema = new mongoose.Schema({
     QueryDate: Date
 });
 
-const Hello = mongoose.model('Hello', helloSchema);
+const Register = mongoose.model('Register', complaintSchema);
 
 
 // Define schema for main file --> index.html
-const mainSchema = new mongoose.Schema({
+const loginSchema = new mongoose.Schema({
     Email: {
         type: String,
-        enum:["chintan@gmail.com", "patelchintan@gmail.com"]
+        enum: ["chintan@gmail.com", "patelchintan@gmail.com"]
     },
     Password: {
         type: String,
-        enum:["123"]
+        enum: ["123"]
     }
 });
 
-const Main = mongoose.model('Main', mainSchema);
+const Login = mongoose.model('Login', loginSchema);
 
 
 // Set the path for index file or QueryFrom file
@@ -52,7 +52,7 @@ const staticPath = path.join(__dirname);
 app.use(express.static(staticPath));
 
 // For save the data in to the database
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
 
 // For main file: index.html
@@ -68,14 +68,14 @@ app.get('/QueryForm', (req, res) => {
 // For main file: index.html --> It opens the QueryForm.html File
 app.post('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname + '/QueryForm.html'));
-    var myData = new Main(req.body);
+    var myData = new Login(req.body);
     myData.save();
 });
 
 // For QueryForm file: QueryForm.html --> It sends the conformations your complaints was taken or not
 app.post('/QueryForm.html', (req, res) => {
     res.sendFile(path.join(__dirname + '/QueryForm.html'));
-    var myData = new Hello(req.body);
+    var myData = new Register(req.body);
     myData.save().then(() => {
         res.send("Your complaint registered succesfully..!!")
     }).catch(() => {
