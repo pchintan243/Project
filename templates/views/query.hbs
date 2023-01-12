@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>header}}
+    <title>Complaint Form</title>
+</head>
+
+<body>
+    {{>navbar}}
+    <div class="container mt-4 text-center">
+        <h1>Complaint Form</h1>
+    </div>
+    <div class="container mt-5">
+        <form class="row g-3 needs-validation" action="/query" method="post">
+
+            <!-- First Name Section -->
+            <div class="col-md-6">
+                <label for="firstname" class="form-label">First name</label>
+                <input type="text" class="form-control" id="validationCustom01" name="Firstname" required>
+            </div>
+
+            <!-- last Name Section -->
+            <div class="col-md-6">
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="validationCustom02" name="Lastname" required>
+            </div>
+
+            <!-- Email Section -->
+            <div class="col-md-12">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    name="Email" required>
+            </div>
+
+            <!-- Phone Section -->
+            <div class="col-md-12">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="validationCustom03" name="Phone"
+                    placeholder="eg:- 1234567890" pattern="[0-9]{10}" required>
+            </div>
+
+            <!-- Complaint date section -->
+            <div class="col-md-12">
+                <label for="querydate" class="form-label">Query Date: </label>
+                <input type="date" name="QueryDate" id="theDate">
+            </div>
+
+            <!-- Branch Section -->
+            <select class="form-select" aria-label="Default select example" name="Branch" required>
+                <option value="" selected>Select Branch</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Artifical Intelligence">Artifical Intelligence</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Electronic & Communication">Electronic & Communication</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Food Processing and Technology">Food Processing and Technology</option>
+                <option value="Automobile Engineering">Automobile Engineering</option>
+            </select>
+
+            <!-- Query Section -->
+            <select class="form-select" aria-label="Default select example" name="Query" onchange="yesnoCheck(this);"
+                required>
+                <option value="" selected>Select Query</option>
+                <option value="Computer">Computer</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Carpentering">Carpentering</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Civil Work">Civil Work</option>
+                <option value="OtherQuery">Other</option>
+            </select>
+            <div id="ifYes" style="display: none;">
+                <label for="other">Enter Other Query</label>
+                <input type="text" name="OtherQuery">
+            </div>
+            <div id="ifY" style="display: none;">
+                <label for="computer">Computer IP</label>
+                <input type="text" name="Computer">
+            </div>
+
+            <!-- Note section -->
+            <label for="floatingTextarea2">Note</label>
+            <div class="form-floating">
+                <textarea class="form-control" id="floatingTextarea2" name="Note" style="height: 100px"></textarea>
+            </div>
+
+            <!-- Button -->
+            <div class="col-12">
+                <button class="btn btn-primary m-1" type="submit" name="button">Submit</button>
+                <button class="btn btn-danger m-1" type="rest" name="button">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+        function yesnoCheck(that) {
+            // Function for selecting Computer related query
+            if (that.value == "Computer") {
+                document.getElementById("ifY").style.display = "block";
+            } else {
+                document.getElementById("ifY").style.display = "none";
+            }
+
+            // Function for selecting other query
+            if (that.value == "OtherQuery") {
+                document.getElementById("ifYes").style.display = "block";
+            } else {
+                document.getElementById("ifYes").style.display = "none";
+            }
+        }
+
+        // For set as a today's date default
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("theDate").value = today;
+    </script>
+</body>
+
+</html>
