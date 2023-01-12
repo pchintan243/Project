@@ -81,23 +81,59 @@ app.post('/query', async (req, res) => {
     // });
 
     try {
-        const registerUser = new Register({
-            Firstname: req.body.Firstname,
-            Lastname: req.body.Lastname,
-            Email: req.body.Email,
-            Phone: req.body.Phone,
-            Date: req.body.Date,
-            Branch: req.body.Branch,
-            Query: req.body.Query,
-            OtherQuery: req.body.OtherQuery,
-            Computer: req.body.Computer,
-            Password: req.body.Password,
-            QueryDate: req.body.QueryDate,
-            Note: req.body.Note
-        });
-        const registered = await registerUser.save();
-        res.status(201).send("Your complaint registered succesfully..!!");
+        const queryValue = req.body.Query;
+        if (queryValue === "Computer") {
+            const registerUser = new Register({
+                Firstname: req.body.Firstname,
+                Lastname: req.body.Lastname,
+                Email: req.body.Email,
+                Phone: req.body.Phone,
+                Date: req.body.Date,
+                Query: req.body.Query,
+                Computer: req.body.Computer,
+                Branch: req.body.Branch,
+                Password: req.body.Password,
+                QueryDate: req.body.QueryDate,
+                Note: req.body.Note
+            });
 
+            const registered = await registerUser.save();
+            res.status(201).send("Your complaint registered succesfully..!!");
+        }
+        else if (queryValue === "OtherQuery") {
+            const registerUser = new Register({
+                Firstname: req.body.Firstname,
+                Lastname: req.body.Lastname,
+                Email: req.body.Email,
+                Phone: req.body.Phone,
+                Date: req.body.Date,
+                Query: req.body.Query,
+                OtherQuery: req.body.OtherQuery,
+                Branch: req.body.Branch,
+                Password: req.body.Password,
+                QueryDate: req.body.QueryDate,
+                Note: req.body.Note
+            });
+
+            const registered = await registerUser.save();
+            res.status(201).send("Your complaint registered succesfully..!!");
+        }
+        else {
+            const registerUser = new Register({
+                Firstname: req.body.Firstname,
+                Lastname: req.body.Lastname,
+                Email: req.body.Email,
+                Phone: req.body.Phone,
+                Date: req.body.Date,
+                Query: req.body.Query,
+                Branch: req.body.Branch,
+                Password: req.body.Password,
+                QueryDate: req.body.QueryDate,
+                Note: req.body.Note
+            });
+            const registered = await registerUser.save();
+            res.status(201).send("Your complaint registered succesfully..!!");
+        }
     }
     catch (e) {
         res.status(400).send("Please fill all the detail correctly..!!")
