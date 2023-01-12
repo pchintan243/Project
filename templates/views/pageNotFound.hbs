@@ -1,13 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="no-js">
 
 <head>
-    {{>header}}
-    <title>Page Not Found</title>
+    <meta charset="UTF-8">
+    <title>CSS3 404 Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="http://code.css3resource.com/common/css/common.css?v=3">
+    <style>
+        a {
+            text-decoration: none;
+            color: #ba155b;
+            text-shadow: none;
+        }
+
+        /* typography */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000;
+        }
+
+        /* structure */
+        #container {
+            width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 0px 0px 50px 0px;
+            border: 1px solid #bbb;
+
+            -webkit-transition: all 800ms ease-in-out;
+            -moz-transition: all 800ms ease-in-out;
+            -o-transition: all 800ms ease-in-out;
+            -ms-transition: all 800ms ease-in-out;
+
+            -moz-box-shadow: 2px 0px 15px #aaa;
+            -webkit-box-shadow: 2px 0px 15px #aaa;
+            box-shadow: 2px 0px 15px #aaa;
+        }
+
+        #h1 {
+            color: #ba155b;
+            font-size: 300px;
+            text-align: center;
+
+            -webkit-transition: all 800ms ease-in-out;
+            -moz-transition: all 800ms ease-in-out;
+            -o-transition: all 800ms ease-in-out;
+            -ms-transition: all 800ms ease-in-out;
+        }
+
+        #h2 {
+            color: #444;
+            font-size: 50px;
+            text-align: center;
+
+            -webkit-transition: all 1s ease-in-out;
+            -moz-transition: all 1s ease-in-out;
+            -o-transition: all 1s ease-in-out;
+            -ms-transition: all 1s ease-in-out;
+        }
+
+        #home {
+            width: 200px;
+            margin: auto;
+            background: #fec353;
+            text-align: center;
+            padding: 10px 0px;
+            border: 3px solid #fed971;
+            color: #fff;
+
+            -webkit-border-bottom-right-radius: 8px;
+            -webkit-border-bottom-left-radius: 8px;
+            -moz-border-radius-bottomright: 8px;
+            -moz-border-radius-bottomleft: 8px;
+            border-bottom-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        /*Hover Styles*/
+        #container:hover {
+            background: #eee;
+
+            -moz-box-shadow: 5px 5px 15px #ccc;
+            -webkit-box-shadow: 5px 5px 15px #ccc;
+            box-shadow: 5px 5px 15px #ccc;
+        }
+
+        #container:hover #h1 {
+            font-size: 30px;
+            color: #ba155b;
+            opacity: 0;
+        }
+
+        #container:hover #h2 {
+            font-size: 50px;
+            color: #222;
+        }
+    </style>
 </head>
 
 <body>
-    <img src="https://blog.stackfindover.com/wp-content/uploads/2022/05/Animated-404-Page-Not-Found.jpg" alt="404img">
+    <div id="container">
+        <h1 id="h1">404!</h1>
+        <h2 id="h2">Page Not Found..!!</h2>
+    </div>
+    <div id="home"><a href="#">Take me home :)</a></div>
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.js"%3E%3C/script%3E'))</script>
+    <script src="http://code.css3resource.com/common/js/common.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            // init ...
+
+        });
+    </script>
 </body>
 
-</html>
+</html> 
