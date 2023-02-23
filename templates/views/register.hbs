@@ -12,7 +12,7 @@
         <h1>Complaint Form</h1>
     </div>
     <div class="container mt-5">
-        <form class="row g-3 needs-validation" action="/query" method="post">
+        <form class="row g-3 needs-validation" action="/registerComplaint" method="post">
 
             <!-- First Name Section -->
             <div class="col-md-6">
@@ -40,14 +40,8 @@
                     placeholder="eg:- 1234567890" pattern="[0-9]{10}" >
             </div>
 
-            <!-- Complaint date section -->
-            <div class="col-md-12">
-                <label for="querydate" class="form-label">Query Date: </label>
-                <input type="date" name="QueryDate" id="theDate">
-            </div>
-
             <!-- Branch Section -->
-            <select class="form-select" aria-label="Default select example" name="Branch" >
+            <select class="form-select" aria-label="Default select example" name="Department" >
                 <option value="" selected>Select Branch</option>
                 <option value="Information Technology">Information Technology</option>
                 <option value="Computer Engineering">Computer Engineering</option>
