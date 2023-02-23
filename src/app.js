@@ -264,7 +264,7 @@ app.post('/registerComplaint', (req, res) => {
         });
         Complaint.registerComplaint(newComplaint, (err, complaint) => {
             if (err) throw err;
-            res.send("thank you for registering your newComplaint");
+            res.send("Your Complaint Registered Successfully..!!");
         });
     }
 });
