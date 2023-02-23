@@ -15,61 +15,31 @@
 
 <body>
     {{>navbar}}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <h2>Register your complaint here&nbsp</h2>
+                <ul class="navbar-nav list-group text-light">
+                    <li class="nav-item bg-danger rounded-3">
+                        <a class="nav-link active" href="/register"><strong>Complaint Form</strong></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <h2>To See Your Complaints Here&nbsp</h2>
+                <ul class="navbar-nav list-group text-light">
+                    <li class="nav-item bg-danger rounded-3">
+                        <a class="nav-link active" href="/complaint"><strong>Your Complaints</strong></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <h1>register your complaint here</h1>
-    <form action="/register" method="get">
-        <button class="btn btn-primary m-1" type="submit" name="button">Register Complaint Here</button>
-    </form>
-
-    {{!-- <h1>your complaints</h1> --}}
-
-    <form action="/client" method="get">
-        <button class="btn btn-primary m-1" type="submit" name="button">Your Complaints</button>
-    </form>
-
-    <table class="table table-bordered">
-        <thead class="table-success">
-            <tr>
-                {{!-- <th scope="col">s.no</th> --}}
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Branch</th>
-                <th scope="col">Query</th>
-                <th scope="col">ComputerIP</th>
-                <th scope="col">Other</th>
-                <th scope="col">Note</th>
-                <th scope="col">Date</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each complaints}}
-            <tr>
-                {{!-- <th scope="row">{{sum @index 1}}</th> --}}
-                <td>{{Firstname}}</td>
-                <td>{{Lastname}}</td>
-                <td>{{Email}}</td>
-                <td>{{Phone}}</td>
-                <td>{{Branch}}</td>
-                <td>{{Query}}</td>
-                <td>{{Computer}}</td>
-                <td>{{OtherQuery}}</td>
-                <td>{{Note}}</td>
-                <td>{{Date}}</td>
-                <td>
-                    <a href="" class="btn border-shadow update">
-                        <button class="btn btn-primary">send</button>
-                    </a>
-
-                </td>
-
-            </tr>
-            {{/each}}
-
-        </tbody>
-    </table>
 
 </body>
 

@@ -15,20 +15,14 @@
         <h1>Login</h1>
     </div>
     <div class="container mt-5">
-        <form class="row g-3 needs-validation" action="/login" method="post">
+        <form class="row g-3" id="tmp" action="/send" method="post">
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                     name="Email" required>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="Password"
-                    autocomplete="on">
-            </div>
-
             <div class="col-12">
-                <button class="btn btn-primary m-1" id="hii" type="submit" name="button">Submit</button>
+                <button class="btn btn-primary m-1" type="submit">SEND</button>
             </div>
         </form>
     </div>

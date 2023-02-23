@@ -43,107 +43,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.use(express.static(__dirname))
-
-
-
 app.get('/', (req, res) => {
-
-    res.render('login1.hbs');
-});
-
-
-var email;
-
-var otp = Math.random();
-otp = otp * 1000000;
-otp = parseInt(otp);
-console.log(otp);
-
-let transporter = nm.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    service: 'Gmail',
-
-    auth: {
-        user: 'kevinpaghadal8@gmail.com',
-        pass: 'orzlqbzozgcbzutn',
-    }
-
-});
-
-let kevin;
-
-app.post('/send', async (req, res) => {
-    kevin = req.body.Email;
-    try {
-        const loginUser = new Login({
-            Email: req.body.Email,
-        });
-        const loginSuccess = await loginUser.save();
-        // res.status(201).render("register");
-    }
-    catch (e) {
-        res.status(400).send("Login detail not fulfilled");
-    }
-
-    // send mail with defined transport object
-    var mailOptions = {
-        to: req.body.Email,
-        subject: "Otp for registration is: ",
-        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-        // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-        res.render('login2');
-    });
-});
-
-app.post('/verify', async (req, res) => {
-
-    if (req.body.otp == otp) {
-        try {
-            Complaint.find({ Email: req.query.Email }, (err, complaints) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.render('client', { complaints: complaints });
-                }
-            })
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
-
-    else {
-        res.render('otp', { msg: 'otp is incorrect' });
-    }
-});
-
-app.post('/resend', function (req, res) {
-    var mailOptions = {
-        to: email,
-        subject: "Otp for registration is: ",
-        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        res.render('otp', { msg: "otp has been sent" });
-    });
-
+    res.render('login.hbs');
 });
 
 // For login: login.hbs
@@ -155,7 +56,6 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render("register");
 });
-
 
 app.get('/adminlogin', (req, res) => {
     res.render("adminlogin");
@@ -200,19 +100,115 @@ app.get('/search', (req, res) => {
 //    console.log(error);
 // }
 // });
-app.get('/client', (req, res) => {
+
+var email;
+
+var otp = Math.random();
+otp = otp * 1000000;
+otp = parseInt(otp);
+console.log(otp);
+
+let transporter = nm.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+
+    auth: {
+        user: 'kevinpaghadal8@gmail.com',
+        pass: 'orzlqbzozgcbzutn',
+    }
+
+});
+
+let kevin;
+
+app.get('/complaint', (req, res) => {
     try {
         Complaint.find({ Email: kevin }, (err, complaints) => {
             if (err) {
                 console.log(err);
             } else {
-                res.render('client', { complaints: complaints });
+                res.render('complaint', { complaints: complaints });
             }
         })
     } catch (error) {
         console.log(error);
     }
 });
+
+
+app.post('/send', async (req, res) => {
+    kevin = req.body.Email;
+    try {
+        const loginUser = new Login({
+            Email: req.body.Email,
+        });
+        const loginSuccess = await loginUser.save();
+        // res.status(201).render("register");
+    }
+    catch (e) {
+        res.status(400).send("Login detail not fulfilled");
+    }
+
+    // send mail with defined transport object
+    var mailOptions = {
+        to: req.body.Email,
+        subject: "Otp for registration is: ",
+        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        res.render('loginOTP');
+    });
+});
+
+app.post('/verify', async (req, res) => {
+
+    if (req.body.otp == otp) {
+        try {
+            Complaint.find({ Email: req.query.Email }, (err, complaints) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render('client', { complaints: complaints });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    else {
+        res.render('otp', { msg: 'otp is incorrect' });
+    }
+});
+
+app.post('/resend', function (req, res) {
+    var mailOptions = {
+        to: email,
+        subject: "Otp for registration is: ",
+        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        res.render('otp', { msg: "otp has been sent" });
+    });
+
+});
+
 
 // For login file  --> It opens the login.hbs File
 app.post('/login1', async (req, res) => {
