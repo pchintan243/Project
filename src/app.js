@@ -5,8 +5,10 @@ const hbs = require("hbs");
 const app = express();
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-const pdfkit = require('pdfkit');
 const { timeStamp } = require("console");
+var cors = require('cors');
+app.use(cors('*'));
+var nm = require('nodemailer');
 mongoose.set('strictQuery', true);
 const port = 8000;
 
@@ -14,10 +16,11 @@ const port = 8000;
 require("./db/conn");
 
 // For get the Register schema which is for complaint form
-const Register = require("./models/registerSchema");
+const Complaint = require("./models/complaint");
 
 // For get the Login schema which is for login form
 const Login = require("./models/loginSchema");
+const adminlogin = require("./models/adminschema");
 
 // const staticPath = path.join(__dirname, "../img/Aadit.jpg");
 // app.use(express.static(staticPath));
@@ -31,17 +34,116 @@ app.set("views", templatePath);
 
 // Get the path of partials directory
 const partialPath = path.join(__dirname, "../templates/partials/");
+
 // Getting the partials as hbs
 hbs.registerPartials(partialPath);
-
 
 app.use(express.json());
 // For get the data in mongodb compass
 app.use(express.urlencoded({ extended: false }));
 
-// For main file: index.hbs
+
+app.use(express.static(__dirname))
+
+
+
 app.get('/', (req, res) => {
-    res.render("index");
+
+    res.render('login1.hbs');
+});
+
+
+var email;
+
+var otp = Math.random();
+otp = otp * 1000000;
+otp = parseInt(otp);
+console.log(otp);
+
+let transporter = nm.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+
+    auth: {
+        user: 'kevinpaghadal8@gmail.com',
+        pass: 'orzlqbzozgcbzutn',
+    }
+
+});
+
+let kevin;
+
+app.post('/send', async (req, res) => {
+    kevin = req.body.Email;
+    try {
+        const loginUser = new Login({
+            Email: req.body.Email,
+        });
+        const loginSuccess = await loginUser.save();
+        // res.status(201).render("register");
+    }
+    catch (e) {
+        res.status(400).send("Login detail not fulfilled");
+    }
+
+    // send mail with defined transport object
+    var mailOptions = {
+        to: req.body.Email,
+        subject: "Otp for registration is: ",
+        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        res.render('login2');
+    });
+});
+
+app.post('/verify', async (req, res) => {
+
+    if (req.body.otp == otp) {
+        try {
+            Complaint.find({ Email: req.query.Email }, (err, complaints) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render('client', { complaints: complaints });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    else {
+        res.render('otp', { msg: 'otp is incorrect' });
+    }
+});
+
+app.post('/resend', function (req, res) {
+    var mailOptions = {
+        to: email,
+        subject: "Otp for registration is: ",
+        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        res.render('otp', { msg: "otp has been sent" });
+    });
+
 });
 
 // For login: login.hbs
@@ -50,15 +152,73 @@ app.get('/login', (req, res) => {
 });
 
 // For query file: query.hbs
-app.get('/query', (req, res) => {
-    res.render("query");
+app.get('/register', (req, res) => {
+    res.render("register");
+});
+
+
+app.get('/adminlogin', (req, res) => {
+    res.render("adminlogin");
+});
+
+app.get('/admin', (req, res) => {
+
+    Complaint.getAllComplaints((err, complaints) => {
+        if (err) throw err;
+
+        res.render('admin', {
+
+            complaints: complaints
+        });
+    });
+
+});
+
+app.get('/search', (req, res) => {
+    try {
+        Complaint.find({ $or: [{ Branch: { '$regex': req.query.dsearch } }, { Date: { '$regex': req.query.dsearch } }] }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('admin', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+});
+// app.get('/delete', (req, res) => {
+//     try {
+//         Complaint.deleteOne((err,complaints)=>{
+//             if(err){
+//                 console.log(err);
+//             }else{
+//                 res.render('admin',{complaints: complaints});
+//             }
+//         })
+// } catch (error) {
+//    console.log(error);
+// }
+// });
+app.get('/client', (req, res) => {
+    try {
+        Complaint.find({ Email: kevin }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('client', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 // For login file  --> It opens the login.hbs File
-app.post('/login', async (req, res) => {
+app.post('/login1', async (req, res) => {
     // const myData = new Login(req.body);
     // myData.save().then(() => {
-    //     res.render("query")
+    //     res.render("register")
     // }).catch(() => {
     //     res.status(400).send("Please fill all the detail correctly..!!")
     // });
@@ -66,10 +226,9 @@ app.post('/login', async (req, res) => {
     try {
         const loginUser = new Login({
             Email: req.body.Email,
-            Password: req.body.Password
         });
         const loginSuccess = await loginUser.save();
-        res.status(201).render("query");
+        res.status(201).render("register");
     }
     catch (e) {
         res.status(400).send("Login detail not fulfilled");
@@ -77,89 +236,66 @@ app.post('/login', async (req, res) => {
 });
 
 
-// For query file: query.hbs --> It sends the conformations your complaints was taken or not
-app.post('/query', async (req, res) => {
-    // const myData = new Register(req.body);
-    // myData.save().then(() => {
-    //     res.send("Your complaint registered succesfully..!!")
-    // }).catch(() => {
-    //     res.status(400).send("Please fill all the detail correctly..!!")
-    // });
+app.post('/registerComplaint', (req, res) => {
+    const Firstname = req.body.Firstname;
+    const Lastname = req.body.Lastname;
+    const Email = req.body.Email;
+    const Branch = req.body.Branch;
+    const Query = req.body.Query;
+    const Computer = req.body.Computer;
+    const OtherQuery = req.body.OtherQuery;
+    const Phone = req.body.Phone;
+    const Note = req.body.Note;
 
-    // In this Schema We set the schema value depending on query basis
-    try {
-        // Get the value of Query
-        const queryValue = req.body.Query;
-
-        // For query Computer
-        if (queryValue === "Computer") {
-            const registerUser = new Register({
-                Firstname: req.body.Firstname,
-                Lastname: req.body.Lastname,
-                Email: req.body.Email,
-                Phone: req.body.Phone,
-                Date: req.body.Date,
-                Query: req.body.Query,
-                Computer: req.body.Computer,
-                Branch: req.body.Branch,
-                Password: req.body.Password,
-                QueryDate: req.body.QueryDate,
-                Note: req.body.Note
-            });
-
-            // Save the data in database and send one conformation to the user
-            const registered = await registerUser.save();
-            res.status(201).send("Your complaint registered succesfully..!!");
-        }
-
-
-        // For OtherQuery
-        else if (queryValue === "OtherQuery") {
-            const registerUser = new Register({
-                Firstname: req.body.Firstname,
-                Lastname: req.body.Lastname,
-                Email: req.body.Email,
-                Phone: req.body.Phone,
-                Date: req.body.Date,
-                Query: req.body.Query,
-                OtherQuery: req.body.OtherQuery,
-                Branch: req.body.Branch,
-                Password: req.body.Password,
-                QueryDate: req.body.QueryDate,
-                Note: req.body.Note
-            });
-
-            const registered = await registerUser.save();
-            res.status(201).send("Your complaint registered succesfully..!!");
-        }
-
-        else {
-            const registerUser = new Register({
-                Firstname: req.body.Firstname,
-                Lastname: req.body.Lastname,
-                Email: req.body.Email,
-                Phone: req.body.Phone,
-                Date: req.body.Date,
-                Query: req.body.Query,
-                Branch: req.body.Branch,
-                Password: req.body.Password,
-                QueryDate: req.body.QueryDate,
-                Note: req.body.Note
-            });
-            const registered = await registerUser.save();
-            res.status(201).send("Your complaint registered succesfully..!!");
-        }
-    }
-    // If some type of error will occur when user filling wrong data or blank data as well
-    catch (e) {
-        res.status(400).send("Please fill all the detail correctly..!!")
+    const postBody = req.body;
+    console.log(postBody);
+    let errors = false;
+    if (errors) {
+        res.render('complaint', {
+            errors: errors
+        });
+    } else {
+        const newComplaint = new Complaint({
+            Firstname: Firstname,
+            Lastname: Lastname,
+            Email: Email,
+            Branch: Branch,
+            Query: Query,
+            Computer: Computer,
+            OtherQuery: OtherQuery,
+            Phone: Phone,
+            Note: Note,
+        });
+        Complaint.registerComplaint(newComplaint, (err, complaint) => {
+            if (err) throw err;
+            res.send("thank you for registering your newComplaint");
+        });
     }
 });
+
+app.post("/adminlogin", async (req, res) => {
+    try {
+        const adminloginUser = new adminlogin({
+            Email: req.body.Email,
+            Password: req.body.Password
+        });
+        const adminloginSuccess = await adminloginUser.save();
+        Complaint.getAllComplaints((err, complaints) => {
+            if (err) throw err;
+
+            res.render('admin', {
+                complaints: complaints
+            });
+        });
+    }
+    catch (e) {
+        res.status(400).send("Login detail not fulfilled");
+    }
+})
 
 app.get('*', (req, res) => {
-    res.status(404).render("pageNotFound");
-});
-
+    res.render('pageNotFound')
+})
 
 // Start the server
 app.listen(port, () => {
