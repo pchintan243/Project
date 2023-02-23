@@ -23,19 +23,21 @@
       <h1>Enter OTP</h1>
       <input type="text" class="form-control input-sm" name="otp" required>
       <div class="col-12">
-        <button class="btn btn-primary" type="submit" name="button">Submit</button>
+        <button class="btn btn-danger" type="submit" name="button">Submit</button>
       </div>
     </form>
 
   </div>
 
   <br>
-
-  <form method="POST" action="/resend">
-    <p style="padding-left: 7rem;">
-      <button class="btn btn-primary btn-sm m-1" type="submit" name="button">Resend OTP</button>
-    </p>
-  </form>
+  
+  <div class="container">
+    <form method="POST" action="/resend">
+      <div class="col-12">
+        <button class="btn btn-danger" type="submit" name="button">Resend OTP</button>
+      </div>
+    </form>
+  </div>
 </body>
 
 </html>
