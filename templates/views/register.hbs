@@ -16,32 +16,32 @@
 
             <!-- First Name Section -->
             <div class="col-md-6">
-                <label for="firstname" class="form-label">First name</label>
-                <input type="text" class="form-control" id="validationCustom01" name="Firstname" >
+                <label for="firstname" class="form-label h5">First name</label>
+                <input type="text" class="form-control" id="validationCustom01" name="Firstname">
             </div>
 
             <!-- last Name Section -->
             <div class="col-md-6">
-                <label for="lastname" class="form-label">Last name</label>
-                <input type="text" class="form-control" id="validationCustom02" name="Lastname" >
+                <label for="lastname" class="form-label h5">Last name</label>
+                <input type="text" class="form-control" id="validationCustom02" name="Lastname">
             </div>
 
             <!-- Email Section -->
             <div class="col-md-12">
-                <label for="email" class="form-label">Email address</label>
+                <label for="email" class="form-label h5">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="Email" >
+                    name="Email">
             </div>
 
             <!-- Phone Section -->
             <div class="col-md-12">
-                <label for="phone" class="form-label">Phone</label>
+                <label for="phone" class="form-label h5">Phone</label>
                 <input type="tel" class="form-control" id="validationCustom03" name="Phone"
-                    placeholder="eg:- 1234567890" pattern="[0-9]{10}" >
+                    placeholder="eg:- 1234567890" pattern="[0-9]{10}">
             </div>
 
             <!-- Branch Section -->
-            <select class="form-select" aria-label="Default select example" name="Department" >
+            <select class="form-select" aria-label="Default select example" name="Department">
                 <option value="" selected>Select Department</option>
                 <option value="Information Technology">Information Technology</option>
                 <option value="Computer Engineering">Computer Engineering</option>
@@ -55,8 +55,7 @@
             </select>
 
             <!-- Query Section -->
-            <select class="form-select" aria-label="Default select example" name="Query" onchange="yesnoCheck(this);"
-                >
+            <select class="form-select" aria-label="Default select example" name="Query" onchange="yesnoCheck(this);">
                 <option value="" selected>Select Query</option>
                 <option value="Computer">Computer</option>
                 <option value="Plumbing">Plumbing</option>
@@ -66,16 +65,16 @@
                 <option value="OtherQuery">Other</option>
             </select>
             <div id="ifYes" style="display: none;">
-                <label for="other">Enter Other Query</label>
+                <label for="other" class="h5">Enter Other Query</label>
                 <input type="text" name="OtherQuery">
             </div>
             <div id="ifY" style="display: none;">
-                <label for="computer">Computer IP</label>
+                <label for="computer" class="h5">Computer IP</label>
                 <input type="text" name="Computer">
             </div>
 
             <!-- Note section -->
-            <label for="floatingTextarea2">Note</label>
+            <label for="floatingTextarea2" class="h5">Note</label>
             <div class="form-floating">
                 <textarea class="form-control" id="floatingTextarea2" name="Note" style="height: 100px"></textarea>
             </div>
@@ -109,19 +108,6 @@
                 document.getElementById("ifYes").style.display = "none";
             }
         }
-
-        // For set as a today's date default
-        var date = new Date();
-
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-
-        if (month < 10) month = "0" + month;
-        if (day < 10) day = "0" + day;
-
-        var today = year + "-" + month + "-" + day;
-        document.getElementById("theDate").value = today;
     </script>
 </body>
 
