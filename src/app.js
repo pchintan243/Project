@@ -12,7 +12,7 @@ var nm = require('nodemailer');
 mongoose.set('strictQuery', true);
 const port = 8000;
 
-// get the mongoose connection conn.js file
+// Get the mongoose connection conn.js file
 require("./db/conn");
 
 // For get the Register schema which is for complaint form
@@ -62,21 +62,18 @@ app.get('/adminlogin', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-
     Complaint.getAllComplaints((err, complaints) => {
         if (err) throw err;
 
         res.render('admin', {
-
             complaints: complaints
         });
     });
-
 });
 
 app.get('/search', (req, res) => {
     try {
-        Complaint.find({ $or: [{ Branch: { '$regex': req.query.dsearch } }, { Date: { '$regex': req.query.dsearch } }] }, (err, complaints) => {
+        Complaint.find({ $or: [{ Department: { '$regex': req.query.dsearch } }, { Date: { '$regex': req.query.dsearch } }] }, (err, complaints) => {
             if (err) {
                 console.log(err);
             } else {
@@ -236,7 +233,7 @@ app.post('/registerComplaint', (req, res) => {
     const Firstname = req.body.Firstname;
     const Lastname = req.body.Lastname;
     const Email = req.body.Email;
-    const Branch = req.body.Branch;
+    const Department = req.body.Department;
     const Query = req.body.Query;
     const Computer = req.body.Computer;
     const OtherQuery = req.body.OtherQuery;
@@ -255,7 +252,7 @@ app.post('/registerComplaint', (req, res) => {
             Firstname: Firstname,
             Lastname: Lastname,
             Email: Email,
-            Branch: Branch,
+            Department: Department,
             Query: Query,
             Computer: Computer,
             OtherQuery: OtherQuery,

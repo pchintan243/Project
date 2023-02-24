@@ -8,7 +8,7 @@ const ComplaintSchema = new mongoose.Schema({
     Firstname: String,
     Lastname: String,
     Email: String,
-    Branch: String,
+    Department: String,
     Query: String,
     OtherQuery: String,
     Computer: String,
