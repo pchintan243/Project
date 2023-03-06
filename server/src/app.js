@@ -52,7 +52,7 @@ app.get('/login', (req, res) => {
     res.render("login");
 });
 
-// For query file: query.hbs
+// For query file: register.hbs
 app.get('/register', (req, res) => {
     res.render("register");
 });
