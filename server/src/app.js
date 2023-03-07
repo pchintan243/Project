@@ -170,7 +170,7 @@ app.post('/verify', async (req, res) => {
 
     if (req.body.otp == otp) {
         try {
-            Complaint.find({ Email: req.query.Email }, (err, complaints) => {
+            Complaint.find({ Email: kevin }, (err, complaints) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -244,7 +244,7 @@ app.post('/registerComplaint', (req, res) => {
     console.log(postBody);
     let errors = false;
     if (errors) {
-        res.render('complaint', {
+        res.status(422).render('complaint', {
             errors: errors
         });
     } else {

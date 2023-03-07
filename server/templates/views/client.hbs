@@ -40,7 +40,46 @@
         </div>
     </nav>
 
-
+    <table class="table table-bordered">
+        <thead class="table-success">
+            <tr>
+                {{!-- <th scope="col">s.no</th> --}}
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Department</th>
+                <th scope="col">Query</th>
+                <th scope="col">ComputerIP</th>
+                <th scope="col">Other</th>
+                <th scope="col">Note</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each complaints}}
+            <tr>
+                {{!-- <th scope="row">{{sum @index 1}}</th> --}}
+                <td>{{Firstname}}</td>
+                <td>{{Lastname}}</td>
+                <td>{{Email}}</td>
+                <td>{{Phone}}</td>
+                <td>{{Department}}</td>
+                <td>{{Query}}</td>
+                <td>{{Computer}}</td>
+                <td>{{OtherQuery}}</td>
+                <td>{{Note}}</td>
+                <td>{{Date}}</td>
+                <td>
+                    <a href="" class="btn border-shadow update">
+                        <button class="btn btn-danger">Send</button>
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </body>
 
 </html>
