@@ -20,7 +20,7 @@ const AdminLogin = () => {
           </div>
 
           <div className="col-12">
-            <button className="btn btn-primary m-1" id="hii" type="submit" name="button">Submit</button>
+            <button className="btn btn-danger m-1" id="hii" type="submit" name="button">Submit</button>
           </div>
         </form>
       </div>
