@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.get('/', (req, res) => {
-    res.render('login.hbs');
+    res.render('home.hbs');
 });
 
 // For login: login.hbs
