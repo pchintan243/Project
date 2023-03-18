@@ -61,6 +61,10 @@ app.get('/adminlogin', (req, res) => {
     res.render("adminlogin");
 });
 
+app.get('/astlogin', (req, res) => {
+    res.render("assistant");
+});
+
 app.get('/admin', (req, res) => {
     Complaint.getAllComplaints((err, complaints) => {
         if (err) throw err;
@@ -120,6 +124,7 @@ let transporter = nm.createTransport({
 
 let kevin;
 
+// Get all complaint of particular email ID
 app.get('/complaint', (req, res) => {
     try {
         Complaint.find({ Email: kevin }, (err, complaints) => {
@@ -131,6 +136,26 @@ app.get('/complaint', (req, res) => {
         })
     } catch (error) {
         console.log(error);
+    }
+});
+
+// To get only computer related complaints
+app.post('/astlogin', async (req, res) => {
+    try {
+        const adminloginUser = new adminlogin({
+            Email: req.body.Email,
+            Password: req.body.Password
+        });
+        const adminloginSuccess = await adminloginUser.save();
+        Complaint.find({ Query: "Computer" }, (err, complaints) => {
+            if (err) {
+                throw err;
+            } else {
+                res.render('complaint', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        res.status(400).send("Login detail not fulfilled");
     }
 });
 
@@ -180,9 +205,7 @@ app.post('/verify', async (req, res) => {
         } catch (error) {
             console.log(error);
         }
-
     }
-
     else {
         res.render('otp', { msg: 'otp is incorrect' });
     }
@@ -285,6 +308,7 @@ app.post("/adminlogin", async (req, res) => {
         res.status(400).send("Login detail not fulfilled");
     }
 })
+
 
 app.get('*', (req, res) => {
     res.render('pageNotFound')
