@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>header}}
+    <title>Add User</title>
+</head>
+
+<body>
+    {{>navbar}}
+
+    <div class="container mt-5">
+        <form class="row g-3 needs-validation" action="/adduser" method="post">
+
+            <!-- First Name Section -->
+            <div class="col-md-12">
+                <label for="firstname" class="form-label h5">First name</label>
+                <input type="text" class="form-control" id="validationCustom01" name="Firstname">
+            </div>
+
+            <!-- last Name Section -->
+            <div class="col-md-12">
+                <label for="lastname" class="form-label h5">Last name</label>
+                <input type="text" class="form-control" id="validationCustom02" name="Lastname">
+            </div>
+
+            <!-- Email Section -->
+            <div class="col-md-12">
+                <label for="email" class="form-label h5">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    name="Email">
+            </div>
+
+            <!-- Phone Section -->
+            <div class="col-md-12">
+                <label for="phone" class="form-label h5">Phone</label>
+                <input type="tel" class="form-control" id="validationCustom03" name="Phone"
+                    placeholder="eg:- 1234567890" pattern="[0-9]{10}">
+            </div>
+
+            <div class="col-md-12">
+                <label for="password" class="form-label h5">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="Password"
+                    autocomplete="on">
+            </div>
+
+            <!-- Button -->
+            <div class="col-12">
+                <button class="btn btn-primary m-1" type="submit" name="button">Submit</button>
+                <button class="btn btn-danger m-1" type="rest" name="button">Reset</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

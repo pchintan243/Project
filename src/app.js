@@ -21,6 +21,7 @@ const Complaint = require("./models/complaint");
 // For get the Login schema which is for login form
 const Login = require("./models/loginSchema");
 const adminlogin = require("./models/adminschema");
+const signup = require("./models/signup");
 
 // const staticPath = path.join(__dirname, "../img/Aadit.jpg");
 // app.use(express.static(staticPath));
@@ -69,11 +70,17 @@ app.get('/admin', (req, res) => {
     Complaint.getAllComplaints((err, complaints) => {
         if (err) throw err;
 
-        res.render('admin', {
+        res.render('complaint', {
             complaints: complaints
         });
     });
 });
+
+
+app.get('/adduser', (req, res) => {
+    res.render("adduser");
+});
+
 
 app.get('/search', (req, res) => {
     try {
@@ -138,6 +145,27 @@ app.get('/complaint', (req, res) => {
         console.log(error);
     }
 });
+
+
+app.post('/adduser', async (req, res) => {
+    try {
+        const newUser = new signup({
+            Firstname: req.body.Firstname,
+            Lastname: req.body.Lastname,
+            Phone: req.body.Phone,
+            Email: req.body.Email,
+            Password: req.body.Password,
+        });
+        const newUserSuccess = await newUser.save();
+        res.send("New User Added Successfully..!!");
+
+    }
+    catch (e) {
+        res.status(400).send("Login detail not fulfilled");
+    }
+
+});
+
 
 // To get only computer related complaints
 app.post('/astlogin', async (req, res) => {
@@ -213,7 +241,7 @@ app.post('/verify', async (req, res) => {
 
 app.post('/resend', function (req, res) {
     var mailOptions = {
-        to: email,
+        to: kevin,
         subject: "Otp for registration is: ",
         html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
     };
