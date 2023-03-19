@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require("../db/conn");
 
-// Register Complaint Schema
+// Register a Complaint Schema
 
 // Define schema for QueryFrom file --> QueryFrom.html
 const ComplaintSchema = new mongoose.Schema({
@@ -14,7 +14,11 @@ const ComplaintSchema = new mongoose.Schema({
     Computer: String,
     Phone: String,
     Note: String,
-    Date: { type: String, default: new Date() }
+    Date: { type: String, default: new Date() },
+    flag: {
+        type: String,
+        default: 'false'
+    }
 });
 
 const Complaint = module.exports = mongoose.model('Complaint', ComplaintSchema);
