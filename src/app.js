@@ -43,45 +43,65 @@ app.use(express.json());
 // For get the data in mongodb compass
 app.use(express.urlencoded({ extended: false }));
 
-
+// Home file
 app.get('/', (req, res) => {
     res.render('home.hbs');
 });
 
-// For login: login.hbs
+// For User login
 app.get('/login', (req, res) => {
     res.render("login");
 });
 
-// For query file: register.hbs
+// Complaint form
 app.get('/register', (req, res) => {
     res.render("register");
 });
 
+// For admin login
 app.get('/adminlogin', (req, res) => {
     res.render("adminlogin");
 });
 
-app.get('/astlogin', (req, res) => {
-    res.render("assistant");
+// Faculty head login
+app.get('/falogin', (req, res) => {
+    res.render("fahead");
 });
 
+// Lab assistant Login
+app.get('/astlogin', (req, res) => {
+    res.render("astlogin");
+});
+
+// To see all the complaints
 app.get('/admin', (req, res) => {
     Complaint.getAllComplaints((err, complaints) => {
         if (err) throw err;
 
-        res.render('complaint', {
+        res.render('assistant', {
             complaints: complaints
         });
     });
 });
 
 
+app.get('/update/:id', function (req, res) {
+    Complaint.findByIdAndUpdate(req.params.id, { $set: { flag: 'true' } }, (err, complaints) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render('admin', { complaints: complaints });
+        }
+    });
+});
+
+// To add the new user
 app.get('/adduser', (req, res) => {
     res.render("adduser");
 });
 
-
+// For sorting the complaint
 app.get('/search', (req, res) => {
     try {
         Complaint.find({ $or: [{ Department: { '$regex': req.query.dsearch } }, { Date: { '$regex': req.query.dsearch } }] }, (err, complaints) => {
@@ -95,21 +115,7 @@ app.get('/search', (req, res) => {
         console.log(error);
     }
 });
-// app.get('/delete', (req, res) => {
-//     try {
-//         Complaint.deleteOne((err,complaints)=>{
-//             if(err){
-//                 console.log(err);
-//             }else{
-//                 res.render('admin',{complaints: complaints});
-//             }
-//         })
-// } catch (error) {
-//    console.log(error);
-// }
-// });
 
-var email;
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -129,12 +135,15 @@ let transporter = nm.createTransport({
 
 });
 
-let kevin;
+let email;
+let phone;
+let Firstname;
+let Lastname;
 
 // Get all complaint of particular email ID
 app.get('/complaint', (req, res) => {
     try {
-        Complaint.find({ Email: kevin }, (err, complaints) => {
+        Complaint.find({ Email: email }, (err, complaints) => {
             if (err) {
                 console.log(err);
             } else {
@@ -169,33 +178,56 @@ app.post('/adduser', async (req, res) => {
 
 // To get only computer related complaints
 app.post('/astlogin', async (req, res) => {
+
     try {
-        const adminloginUser = new adminlogin({
-            Email: req.body.Email,
-            Password: req.body.Password
-        });
-        const adminloginSuccess = await adminloginUser.save();
-        Complaint.find({ Query: "Computer" }, (err, complaints) => {
+        Complaint.find({ flag: true }, (err, complaints) => {
             if (err) {
-                throw err;
+                console.log(err);
             } else {
-                res.render('complaint', { complaints: complaints });
+                res.render('assistant', { complaints: complaints });
             }
         })
     } catch (error) {
-        res.status(400).send("Login detail not fulfilled");
+        console.log(error);
     }
 });
 
 
+app.get('/update/:id', function (req, res) {
+    Complaint.findByIdAndUpdate(req.params.id, { $set: { flag: 'true' } }, (err, complaints) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render('admin', { complaints: complaints });
+        }
+    });
+});
+
+
 app.post('/send', async (req, res) => {
-    kevin = req.body.Email;
+    email = req.body.Email;
+
+    User.findOne({ email }, { Firstname: 1 }, (err, result) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        if (!result) {
+            console.log("no user found:")
+            return;
+        }
+        Firstname = result.Firstname;
+    });
+
     try {
-        const loginUser = new Login({
-            Email: req.body.Email,
-        });
-        const loginSuccess = await loginUser.save();
-        // res.status(201).render("register");
+        // Find the user in the database
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            res.render('login1', { message: 'Invalid email or password' });
+            return;
+        }
     }
     catch (e) {
         res.status(400).send("Login detail not fulfilled");
@@ -219,11 +251,27 @@ app.post('/send', async (req, res) => {
     });
 });
 
+// For show Fa-head complaint --> Only Computer related complaint
+app.post('/falogin', (req, res) => {
+    try {
+        Complaint.find({ Query: "Computer" }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('complaint', { complaints: complaints });
+            }
+        })
+    }
+    catch (error) {
+        res.status(404).send(error)
+    }
+})
+
 app.post('/verify', async (req, res) => {
 
     if (req.body.otp == otp) {
         try {
-            Complaint.find({ Email: kevin }, (err, complaints) => {
+            Complaint.find({ Email: email }, (err, complaints) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -260,12 +308,6 @@ app.post('/resend', function (req, res) {
 
 // For login file  --> It opens the login.hbs File
 app.post('/login1', async (req, res) => {
-    // const myData = new Login(req.body);
-    // myData.save().then(() => {
-    //     res.render("register")
-    // }).catch(() => {
-    //     res.status(400).send("Please fill all the detail correctly..!!")
-    // });
 
     try {
         const loginUser = new Login({
@@ -283,7 +325,7 @@ app.post('/login1', async (req, res) => {
 app.post('/registerComplaint', (req, res) => {
     const Firstname = req.body.Firstname;
     const Lastname = req.body.Lastname;
-    const Email = kevin;
+    const Email = email;
     const Department = req.body.Department;
     const Query = req.body.Query;
     const Computer = req.body.Computer;
