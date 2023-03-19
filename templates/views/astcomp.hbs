@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>header}}
+    <script src="https://kit.fontawesome.com/94b31d7673.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+    <title>Complaints</title>
+</head>
+
+<body>
+    {{!-- {{>navbar}} --}}
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand">
+            <div class="container m-0">
+                <img src="https://scontent.famd6-2.fna.fbcdn.net/v/t1.6435-9/135096585_1042982426201131_3067209410085214058_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a26aad&_nc_ohc=-QHaFwAretAAX-ANO78&_nc_oc=AQlpai7LzeJhYGug_pB9RMD8nOYiOerUQHDK7RqXk0NqOLF-t4VJu5HQhbC2SeJtuZVhRe-uskUMSptFwLZx2Xj-&_nc_ht=scontent.famd6-2.fna&oh=00_AfBKD0NYj4xYV8cC5QsGV8SAfGTlhGF5U1Q7oRORm9-crg&oe=6419B325"
+                    alt="" width="80" height="80">
+            </div>
+        </a>
+
+
+
+        <form class="form-inline d-flex" action="/search" method="get">
+            <input class="form-control me-2" type="text" name="dsearch" placeholder="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <h2>Register Your Complaint Here&nbsp</h2>
+                <ul class="navbar-nav list-group text-light">
+                    <li class="nav-item bg-danger rounded-3">
+                        <a class="nav-link active" href="/register"><strong>Complaint Form</strong></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <h2>To See Your Complaints&nbsp</h2>
+                <ul class="navbar-nav list-group text-light">
+                    <li class="nav-item bg-danger rounded-3">
+                        <a class="nav-link active" href="/astcomp"><strong>Your Complaints</strong></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</body>
+
+</html>
