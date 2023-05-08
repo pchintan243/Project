@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 require("../db/conn");
 
-// Register a Complaint Schema
-
-// Define schema for QueryFrom file --> QueryFrom.html
 const ComplaintSchema = new mongoose.Schema({
     Firstname: String,
     Lastname: String,
@@ -15,6 +12,10 @@ const ComplaintSchema = new mongoose.Schema({
     Phone: String,
     Note: String,
     Date: { type: String, default: new Date() },
+    status: {
+        type: String,
+        default: 'pending'
+    },
     flag: {
         type: String,
         default: 'false'
@@ -27,9 +28,6 @@ module.exports.registerComplaint = function (newComplaint, callback) {
     newComplaint.save(callback);
 }
 
-// module.exports.getAllComplaints = function (callback) {
-//     Complaint.find(callback);
-// }
 module.exports.getAllComplaints = function (callback) {
     Complaint.find(callback);
 }

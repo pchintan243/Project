@@ -12,10 +12,8 @@ const SignupSchema = new mongoose.Schema({
         type: String
     },
     Email: {
-        type: String
-    },
-    Password: {
-        type: String
+        type: String,
+        unique: true
     }
 });
 

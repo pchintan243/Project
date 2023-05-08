@@ -21,7 +21,7 @@ const Complaint = require("./models/complaint");
 // For get the Login schema which is for login form
 const Login = require("./models/loginSchema");
 const adminlogin = require("./models/adminschema");
-const signup = require("./models/signup");
+const Signup = require("./models/signup");
 
 // const staticPath = path.join(__dirname, "../img/Aadit.jpg");
 // app.use(express.static(staticPath));
@@ -136,9 +136,7 @@ let transporter = nm.createTransport({
 });
 
 let email;
-let phone;
-let Firstname;
-let Lastname;
+let sharedVariable = {};
 
 // Get all complaint of particular email ID
 app.get('/complaint', (req, res) => {
@@ -208,21 +206,30 @@ app.get('/update/:id', function (req, res) {
 app.post('/send', async (req, res) => {
     email = req.body.Email;
 
-    User.findOne({ email }, { Firstname: 1 }, (err, result) => {
+    Signup.findOne({ email }, { Firstname: 1, Lastname: 1, Phone: 1 }, (err, result) => {
         if (err) {
             console.log(err);
             return;
         }
         if (!result) {
-            console.log("no user found:")
+            res.send(`
+            <script>
+              alert('no user found');
+              window.location.href = '/'; // Redirect to homepage
+            </script>
+          `);
             return;
         }
-        Firstname = result.Firstname;
+        console.log(result);
+        const { Firstname, Lastname, Phone } = result;
+        sharedVariable.FirstName = Firstname; // Store the Firstname variable in the shared variable
+        sharedVariable.LastName = Lastname;
+        sharedVariable.phone = Phone;
     });
 
     try {
         // Find the user in the database
-        const user = await User.findOne({ email });
+        const user = await Signup.findOne({ email });
 
         if (!user) {
             res.render('login1', { message: 'Invalid email or password' });
@@ -271,7 +278,7 @@ app.post('/verify', async (req, res) => {
 
     if (req.body.otp == otp) {
         try {
-            Complaint.find({ Email: email }, (err, complaints) => {
+            Complaint.find({ Email: req.query.Email }, (err, complaints) => {
                 if (err) {
                     console.log(err);
                 } else {
