@@ -12,9 +12,9 @@ const ComplaintSchema = new mongoose.Schema({
     Phone: String,
     Note: String,
     Date: { type: String, default: new Date() },
-    status: {
+    Status: {
         type: String,
-        default: 'pending'
+        default: 'Pending'
     },
     flag: {
         type: String,

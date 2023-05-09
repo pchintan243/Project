@@ -58,6 +58,11 @@ app.get('/register', (req, res) => {
     res.render("register");
 });
 
+// Client form
+app.get('/client', (req, res) => {
+    res.render("client");
+});
+
 // For admin login
 app.get('/adminlogin', (req, res) => {
     res.render("adminlogin");
@@ -73,32 +78,119 @@ app.get('/astlogin', (req, res) => {
     res.render("astlogin");
 });
 
-// To see all the complaints
+// Admin Login
 app.get('/admin', (req, res) => {
+    res.render("admin");
+});
+
+// To see all the complaints
+app.get('/admincomplaint', (req, res) => {
     Complaint.getAllComplaints((err, complaints) => {
         if (err) throw err;
 
-        res.render('assistant', {
+        res.render('admincomplaint', {
             complaints: complaints
         });
     });
 });
 
+app.get('/astcomp', (req, res) => {
+    try {
+        Complaint.find({ flag: true }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('astcomp', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/facomp', (req, res) => {
+    Complaint.find({ Query: "Computer" }, (err, complaints) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('facomp', { complaints: complaints });
+        }
+    })
+});
+
+app.get('/adduser', (req, res) => {
+    res.render('adduser');
+});
+
+app.get('/remove-user', (req, res) => {
+
+    res.render('remove-user');
+});
 
 app.get('/update/:id', function (req, res) {
-    Complaint.findByIdAndUpdate(req.params.id, { $set: { flag: 'true' } }, (err, complaints) => {
+    Complaint.findByIdAndUpdate(req.params.id, { $set: { Status: 'Processing', flag: 'true' } }, (err, complaints) => {
         if (err) {
             console.log(err);
         }
         else {
-            res.render('admin', { complaints: complaints });
+            // res.render('sending',{complaints: complaints});
+            res.send(`
+            <script>
+              alert('Complaint sended successfully');
+              window.location.href = '/facomp'; // Redirect to homepage
+            </script>
+          `);
         }
     });
 });
 
-// To add the new user
-app.get('/adduser', (req, res) => {
-    res.render("adduser");
+app.get('/Solved/:id', function (req, res) {
+    Complaint.findByIdAndUpdate(req.params.id, { $set: { Status: 'Solved' } }, (err, complaints) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            // res.render('sending',{complaints: complaints});
+            res.send(`
+            <script>
+              alert('Sending action');
+              window.location.href = '/astcomp'; // Redirect to homepage
+            </script>
+          `);
+        }
+    });
+});
+
+app.get('/Noc/:id', function (req, res) {
+    Complaint.findByIdAndUpdate(req.params.id, { $set: { Status: 'Noc' } }, (err, complaints) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            // res.render('sending',{complaints: complaints});
+            res.send(`
+            <script>
+              alert('sending action');
+              window.location.href = '/assistant'; // Redirect to homepage
+            </script>
+          `);
+        }
+    });
+});
+
+// Get all complaint of particular email ID
+app.get('/complaint', (req, res) => {
+    try {
+        Complaint.find({ Email: email }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('complaint', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 // For sorting the complaint
@@ -132,81 +224,15 @@ let transporter = nm.createTransport({
         user: 'kevinpaghadal8@gmail.com',
         pass: 'orzlqbzozgcbzutn',
     }
-
 });
 
 let email;
 let sharedVariable = {};
 
-// Get all complaint of particular email ID
-app.get('/complaint', (req, res) => {
-    try {
-        Complaint.find({ Email: email }, (err, complaints) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.render('complaint', { complaints: complaints });
-            }
-        })
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-
-app.post('/adduser', async (req, res) => {
-    try {
-        const newUser = new signup({
-            Firstname: req.body.Firstname,
-            Lastname: req.body.Lastname,
-            Phone: req.body.Phone,
-            Email: req.body.Email,
-            Password: req.body.Password,
-        });
-        const newUserSuccess = await newUser.save();
-        res.send("New User Added Successfully..!!");
-
-    }
-    catch (e) {
-        res.status(400).send("Login detail not fulfilled");
-    }
-
-});
-
-
-// To get only computer related complaints
-app.post('/astlogin', async (req, res) => {
-
-    try {
-        Complaint.find({ flag: true }, (err, complaints) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.render('assistant', { complaints: complaints });
-            }
-        })
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-
-app.get('/update/:id', function (req, res) {
-    Complaint.findByIdAndUpdate(req.params.id, { $set: { flag: 'true' } }, (err, complaints) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render('admin', { complaints: complaints });
-        }
-    });
-});
-
-
 app.post('/send', async (req, res) => {
     email = req.body.Email;
 
-    Signup.findOne({ email }, { Firstname: 1, Lastname: 1, Phone: 1 }, (err, result) => {
+    Signup.findOne({ Email: email }, { Firstname: 1, Lastname: 1, Phone: 1 }, (err, result) => {
         if (err) {
             console.log(err);
             return;
@@ -215,7 +241,7 @@ app.post('/send', async (req, res) => {
             res.send(`
             <script>
               alert('no user found');
-              window.location.href = '/'; // Redirect to homepage
+              window.location.href = '/login';
             </script>
           `);
             return;
@@ -224,21 +250,8 @@ app.post('/send', async (req, res) => {
         const { Firstname, Lastname, Phone } = result;
         sharedVariable.FirstName = Firstname; // Store the Firstname variable in the shared variable
         sharedVariable.LastName = Lastname;
-        sharedVariable.phone = Phone;
+        sharedVariable.Phone = Phone;
     });
-
-    try {
-        // Find the user in the database
-        const user = await Signup.findOne({ email });
-
-        if (!user) {
-            res.render('login1', { message: 'Invalid email or password' });
-            return;
-        }
-    }
-    catch (e) {
-        res.status(400).send("Login detail not fulfilled");
-    }
 
     // send mail with defined transport object
     var mailOptions = {
@@ -258,6 +271,74 @@ app.post('/send', async (req, res) => {
     });
 });
 
+
+
+app.post('/adduser', async (req, res) => {
+    const Firstname = req.body.Firstname;
+    const Lastname = req.body.Lastname;
+    const Email = req.body.Email;
+    const Phone = req.body.Phone;
+    let errors = false;
+    if (errors) {
+        res.render('complaint', {
+            errors: errors
+        });
+    } else {
+        const newUser = new Signup({
+            Firstname: Firstname,
+            Lastname: Lastname,
+            Email: Email,
+            Phone: Phone
+        });
+        Signup.addUser(newUser, (err, user) => {
+            if (err) throw err;
+            res.send(`
+            <script>
+              alert('Successfully added user');
+              window.location.href = '/adduser'; // Redirect to homepage
+            </script>
+          `);
+        });
+    }
+
+});
+
+
+app.post('/remove-user', (req, res) => {
+    try {
+        Signup.deleteOne({ Email: req.body.Email }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(`
+                <script>
+                  alert('User Deleted successfully');
+                  window.location.href = '/admin'; // Redirect to homepage
+                </script>
+              `);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// To get only computer related complaints
+app.post('/astlogin', async (req, res) => {
+
+    try {
+        Complaint.find({ flag: true }, (err, complaints) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('assistant', { complaints: complaints });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 // For show Fa-head complaint --> Only Computer related complaint
 app.post('/falogin', (req, res) => {
     try {
@@ -265,7 +346,7 @@ app.post('/falogin', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                res.render('complaint', { complaints: complaints });
+                res.render('facomp', { complaints: complaints });
             }
         })
     }
@@ -330,14 +411,14 @@ app.post('/login1', async (req, res) => {
 
 
 app.post('/registerComplaint', (req, res) => {
-    const Firstname = req.body.Firstname;
-    const Lastname = req.body.Lastname;
+    const Firstname = sharedVariable.Firstname;
+    const Lastname = sharedVariable.Lastname;
+    const Phone = sharedVariable.Phone;
     const Email = email;
     const Department = req.body.Department;
     const Query = req.body.Query;
     const Computer = req.body.Computer;
     const OtherQuery = req.body.OtherQuery;
-    const Phone = req.body.Phone;
     const Note = req.body.Note;
 
     const postBody = req.body;
@@ -361,7 +442,12 @@ app.post('/registerComplaint', (req, res) => {
         });
         Complaint.registerComplaint(newComplaint, (err, complaint) => {
             if (err) throw err;
-            res.send("Your Complaint Registered Successfully..!!");
+            res.send(`
+            <script>
+              alert('Complaint submmited successfully');
+              window.location.href = '/client'; // Redirect to homepage
+            </script>
+            `);
         });
     }
 });
@@ -393,5 +479,5 @@ app.get('*', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`The application started successfully on port ${port}`);
+    console.log(`The application started successfully on port ${port} `);
 });

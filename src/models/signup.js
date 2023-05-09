@@ -9,7 +9,7 @@ const SignupSchema = new mongoose.Schema({
         type: String
     },
     Phone: {
-        type: String
+        type: Number
     },
     Email: {
         type: String,
